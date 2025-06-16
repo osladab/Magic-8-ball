@@ -1,5 +1,6 @@
 import random
 
+# список слов для игры
 word_list = ['год', 'человек', 'время', 'дело', 'жизнь', 'день', 'рука', 'раз', 'работа', 'слово', 'место', 'лицо',
              'друг', 'глаз', 'вопрос', 'дом', 'сторона', 'страна', 'мир', 'случай', 'голова', 'ребенок', 'сила', 'конец',
              'вид', 'система', 'часть', 'город', 'отношение', 'женщина', 'деньги', 'земля', 'машина', 'вода', 'отец',
@@ -104,11 +105,11 @@ word_list = ['год', 'человек', 'время', 'дело', 'жизнь',
              'препарат', 'действительность', 'москвич', 'остаток', 'изображение', 'сделка', 'сочинение',
              'покупатель', 'танк', 'затрата', 'строка', 'единица']
 
-def get_word():
+def get_word(): # возвврат случайное слово
     res = random.choice(word_list).upper()
     return res
 
-def display_hangman(tries):
+def display_hangman(tries): # вывод виселицы
     hanged_man = [  # 0 финальное состояние: голова, торс, обе руки, обе ноги
         '''
            --------
@@ -182,20 +183,32 @@ def display_hangman(tries):
     return hanged_man[tries]
 
 
-def play(word):
-    word_compl = '_' * len(word)
-    guessed = False
-    guessed_letters = []
-    guessed_words = []
-    tries = 6
+def play(word): # основная функция игры
+    word_compl = '_' * len(word) #количество _ по размеру слова
+    guessed = False # угадано ли слово
+    guessed_letters = [] # список угаданных букв
+    guessed_words = [] # список угаданных слов
+    tries = 6 # количесвто попыток
+    letters_guessed = list[word_compl] # список угаданных букв
 
     print('Давайте играть в угадайку слов!')
-    print(display_hangman(tries))
+
     print('У тебя 6 попыток угадать!')
 
+    print(f'Загадано слово из {len(word)} букв.')
+    print(*word_compl, sep = '')
 
-    print(f'Загадано слово из '{len(word)}' букв.')
-    print(word_compl)
+    while tries > 0:
+        print(display_hangman(tries)) # принт виселицы  с попытками
+        letter = input('Введите букву!').upper()
+
+        if ord(letter) not in range(1040, 1072):
+            print('По-русски!')
+            continue
+
+
+
+
 
 
 
