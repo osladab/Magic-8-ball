@@ -184,27 +184,66 @@ def display_hangman(tries): # вывод виселицы
 
 
 def play(word): # основная функция игры
-    word_compl = '_' * len(word) #количество _ по размеру слова
+    # word_compl = '_' * len(word) #количество _ по размеру слова
+    word_compl_list = ['_' for c in word]
     guessed = False # угадано ли слово
-    guessed_letters = [] # список угаданных букв
+    guessed_letters = [] # список использованных букв
     guessed_words = [] # список угаданных слов
     tries = 6 # количесвто попыток
-    letters_guessed = list[word_compl] # список угаданных букв
+    char_count = 0
+    #letters_guessed = list[word_compl] # список угаданных букв
+
 
     print('Давайте играть в угадайку слов!')
 
     print('У тебя 6 попыток угадать!')
 
     print(f'Загадано слово из {len(word)} букв.')
-    print(*word_compl, sep = '')
+    print(*word_compl_list, sep = '')
 
-    while tries > 0:
+    while tries > 0 and char_count != len(word):
         print(display_hangman(tries)) # принт виселицы  с попытками
-        letter = input('Введите букву!').upper()
+        letter = 'А'#input('Введите букву!').upper()
 
-        if ord(letter) not in range(1040, 1072):
+        if len(letter) != 1: # проверка на одну букву
+            print('ОДНУ букву!')
+            continue
+
+        if ord(letter) not in range(1040, 1072):# проверка на русскую букву
             print('По-русски!')
             continue
+
+        if letter in guessed_letters:# проверка на повторную букву
+            print('Такая уже была!')
+            continue
+
+
+        if letter not in word: # буквы нет в слове
+            guessed_letters.append(letter)
+            tries -= 1
+            print('Неверно')
+            #continue
+
+        if letter in word: # бкува есть в слове
+            guessed_letters.append(letter)
+            char_count += 1
+            index = 0
+            while index != -1:
+                index = word.find(letter, index)
+                if index == -1:
+                    continue
+                word_compl_list[index] = letter
+                index += 1 # сдвиг поискового ндекса
+            print('Есть такая буква!')
+            print(*word_compl_list, sep = '')
+
+
+
+wrd = 'АСС'
+play(wrd)
+
+
+
 
 
 
