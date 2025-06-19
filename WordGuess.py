@@ -186,7 +186,7 @@ def display_hangman(tries): # вывод виселицы
 def play(word): # основная функция игры
     # word_compl = '_' * len(word) #количество _ по размеру слова
     word_compl_list = ['_' for c in word]
-    guessed = False # угадано ли слово
+    #guessed = False # угадано ли слово
     guessed_letters = [] # список использованных букв
     guessed_words = [] # список угаданных слов
     tries = 6 # количесвто попыток
@@ -200,33 +200,39 @@ def play(word): # основная функция игры
 
     print(f'Загадано слово из {len(word)} букв.')
     print(*word_compl_list, sep = '')
+    print(display_hangman(tries)) # принт виселицы  с попытками
 
     while tries > 0 and char_count != len(word):
-        print(display_hangman(tries)) # принт виселицы  с попытками
-        letter = 'А'#input('Введите букву!').upper()
+
+        letter = input('Введите букву!').upper().strip()
 
         if len(letter) != 1: # проверка на одну букву
             print('ОДНУ букву!')
             continue
 
-        if ord(letter) not in range(1040, 1072):# проверка на русскую букву
+        elif ord(letter) not in range(1040, 1072):# проверка на русскую букву
             print('По-русски!')
             continue
 
-        if letter in guessed_letters:# проверка на повторную букву
+        elif letter in guessed_letters:# проверка на повторную букву
             print('Такая уже была!')
             continue
 
 
-        if letter not in word: # буквы нет в слове
+        elif letter not in word: # буквы нет в слове
             guessed_letters.append(letter)
             tries -= 1
             print('Неверно')
-            #continue
+            print(display_hangman(tries)) # принт виселицы  с попытками
+            print('Использованные буквы', end = ': ')
+            print(*guessed_letters, end = ' \n')
+            print(*word_compl_list, sep = '')
+            continue
 
-        if letter in word: # бкува есть в слове
+
+        elif letter in word: # бкува есть в слове
             guessed_letters.append(letter)
-            char_count += 1
+
             index = 0
             while index != -1:
                 index = word.find(letter, index)
@@ -234,13 +240,23 @@ def play(word): # основная функция игры
                     continue
                 word_compl_list[index] = letter
                 index += 1 # сдвиг поискового ндекса
+                char_count += 1 # счетчик букв в слове
             print('Есть такая буква!')
             print(*word_compl_list, sep = '')
 
+    if tries == 0:
+        print(f'ПЗДЦ! Правильное слово - {word}')
+
+    elif char_count == len(word):
+        print('Вы угадали!')
 
 
-wrd = 'АСС'
-play(wrd)
+
+game_continue = 'Y'
+while game_continue == 'Y':
+    wrd = get_word()
+    play(wrd)
+    game_continue = input('Хотите продожить?').upper()
 
 
 
